@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { fetchInterviews, deleteInterview } from '../actions/interviewActions';
 
 class Interviews extends Component {
@@ -9,7 +10,6 @@ class Interviews extends Component {
 	}
 
 	callDelete(id) {
-		console.log('callDelete called');
 		this.props.deleteInterview(id);
 	}
 
@@ -23,6 +23,7 @@ class Interviews extends Component {
 					<p>End Time: {item.finish}</p>
 					<p>Participants: {item.participants.map((one) => one.name).join(' , ')}</p>
 					<button onClick={this.callDelete.bind(this, item.id)}>Delete</button>
+					<NavLink to={`/${item.id}`}>Show/Edit Interview </NavLink>
 				</div>
 			);
 		});
@@ -36,8 +37,7 @@ class Interviews extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	interviewList: state.interviews.items,
-	deleteId: state.interviews.deleteId
+	interviewList: state.interviews.items
 });
 
 Interviews.propTypes = {

@@ -1,7 +1,8 @@
-import { DELETE_INTERVIEW, FETCH_INTERVIEWS, NEW_INTERVIEW } from '../actions/types';
+import { DELETE_INTERVIEW, FETCH_INTERVIEWS, NEW_INTERVIEW, SHOW_INTERVIEW, UPDATE_INTERVIEW } from '../actions/types';
 
 const initialState = {
-	items: []
+	items: [],
+	item: {}
 };
 
 export default (state = initialState, action) => {
@@ -24,6 +25,16 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				items: tempB
+			};
+		case UPDATE_INTERVIEW:
+			return {
+				...state,
+				item: {}
+			};
+		case SHOW_INTERVIEW:
+			return {
+				...state,
+				item: action.payload
 			};
 		default:
 			return state;

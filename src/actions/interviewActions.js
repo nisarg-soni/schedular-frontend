@@ -1,4 +1,4 @@
-import { DELETE_INTERVIEW, FETCH_INTERVIEWS, NEW_INTERVIEW, SHOW_INTERVIEW } from './types';
+import { DELETE_INTERVIEW, FETCH_INTERVIEWS, NEW_INTERVIEW, SHOW_INTERVIEW, UPDATE_INTERVIEW } from './types';
 
 const url = 'http://localhost:3001/api/v1/interviews';
 
@@ -30,12 +30,15 @@ export const createInterview = (interviewData) => (dispatch) => {
 };
 
 export const showInterview = (id) => (dispatch) => {
-	fetch(url + `/${id}`).then((res) => res.json()).then((interview) =>
-		dispatch({
+	fetch(url + `/${id}`).then((res) => res.json()).then((interview) => {
+		// console.log();
+		interview.data.start = getTime(interview.data.start);
+		interview.data.finish = getTime(interview.data.finish);
+		return dispatch({
 			type: SHOW_INTERVIEW,
-			payload: interview
-		})
-	);
+			payload: interview.data
+		});
+	});
 };
 
 export const deleteInterview = (id) => (dispatch) => {
@@ -43,10 +46,37 @@ export const deleteInterview = (id) => (dispatch) => {
 		method: 'DELETE'
 	})
 		.then((res) => res.json())
+		.then((interview) => {
+			return dispatch({
+				type: DELETE_INTERVIEW,
+				payload: interview.data
+			});
+		});
+};
+
+export const updateInterview = (interviewData) => (dispatch) => {
+	fetch(url + `/${interviewData.id}`, {
+		method: 'PATCH',
+		headers: {
+			'content-type': 'application/json'
+		},
+		body: JSON.stringify(interviewData)
+	})
+		.then((res) => res.json())
 		.then((interview) =>
 			dispatch({
-				type: DELETE_INTERVIEW,
+				type: UPDATE_INTERVIEW,
 				payload: interview.data
 			})
 		);
+};
+
+const getTime = (str) => {
+	let tt = new Date(str);
+
+	let result = tt.toLocaleTimeString();
+
+	if (tt[1] === ':') result = '0' + result;
+
+	return `${result.slice(0, 5)}`;
 };
