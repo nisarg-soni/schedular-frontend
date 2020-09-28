@@ -3,19 +3,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { showInterview, updateInterview } from '../actions/interviewActions';
 import { connect } from 'react-redux';
+// import store from '../store';
 
 class Editinterview extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			id: null,
-			topic: null,
-			date: null,
-			start: null,
-			finish: null,
-			interviewer: null,
-			candidate: null
+			id: '',
+			topic: '',
+			date: '',
+			start: '',
+			finish: '',
+			interviewer: '',
+			candidate: ''
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -24,14 +25,15 @@ class Editinterview extends Component {
 
 	componentDidMount() {
 		this.props.showInterview(this.props.match.params.id);
+
 		this.setState({
-			id: this.props.initialValues.id,
-			topic: this.props.initialValues.topic,
-			date: this.props.initialValues.date,
-			start: this.props.initialValues.start,
-			finish: this.props.initialValues.finish,
-			interviewer: this.props.initialValues.interviewer,
-			candidate: this.props.initialValues.candidate
+			id: this.props.initialInterview.id,
+			topic: this.props.initialInterview.topic,
+			date: this.props.initialInterview.date,
+			start: this.props.initialInterview.start,
+			finish: this.props.initialInterview.finish,
+			interviewer: this.props.initialInterview.interviewer,
+			candidate: this.props.initialInterview.candidate
 		});
 	}
 
@@ -67,7 +69,7 @@ class Editinterview extends Component {
 		return (
 			<div>
 				<h1>Edit/Update Interview</h1>
-				<form onSubmit={this.onSubmit} initialValues={this.props.interview}>
+				<form onSubmit={this.onSubmit}>
 					<div>
 						<input type="text" name="id" value={this.state.id} hidden readOnly />
 					</div>
@@ -110,14 +112,14 @@ class Editinterview extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		initialValues: state.interviews.item
+		initialInterview: state.interviews.item
 	};
 };
 
 Editinterview.propTypes = {
 	showInterview: PropTypes.func.isRequired,
 	updateInterview: PropTypes.func.isRequired,
-	initialValues: PropTypes.object
+	initialInterview: PropTypes.object
 };
 
 export default connect(mapStateToProps, { showInterview, updateInterview })(Editinterview);
