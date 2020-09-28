@@ -9,13 +9,13 @@ class Editinterview extends Component {
 		super(props);
 
 		this.state = {
-			id: '',
-			topic: '',
-			date: '',
-			start: '',
-			finish: '',
-			interviewer: '',
-			candidate: ''
+			id: null,
+			topic: null,
+			date: null,
+			start: null,
+			finish: null,
+			interviewer: null,
+			candidate: null
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -24,6 +24,15 @@ class Editinterview extends Component {
 
 	componentDidMount() {
 		this.props.showInterview(this.props.match.params.id);
+		this.setState({
+			id: this.props.initialValues.id,
+			topic: this.props.initialValues.topic,
+			date: this.props.initialValues.date,
+			start: this.props.initialValues.start,
+			finish: this.props.initialValues.finish,
+			interviewer: this.props.initialValues.interviewer,
+			candidate: this.props.initialValues.candidate
+		});
 	}
 
 	callUpdate(interviewData) {
@@ -47,7 +56,7 @@ class Editinterview extends Component {
 			candidate: this.state.candidate
 		};
 
-		this.props.updateInterview(interview);
+		this.callUpdate(interview);
 
 		setTimeout(() => {
 			window.location = '/';
@@ -108,7 +117,7 @@ const mapStateToProps = (state) => {
 Editinterview.propTypes = {
 	showInterview: PropTypes.func.isRequired,
 	updateInterview: PropTypes.func.isRequired,
-	interview: PropTypes.object
+	initialValues: PropTypes.object
 };
 
 export default connect(mapStateToProps, { showInterview, updateInterview })(Editinterview);
